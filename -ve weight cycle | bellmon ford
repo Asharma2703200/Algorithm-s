@@ -1,0 +1,87 @@
+/*PROBELEM STATEMENT ->
+
+You are given 2 integers N and M , N is the number of vertices, M is the number of edges. You'll also be given ai, bi and wi where ai and bi represents an edge from a vertex ai to a vertex bi and wi respresents the weight of that edge.
+
+Task is to find if it contains a negative weight cycle or not.
+Input Format
+First line contains two space separated integers,N and M. Then M lines follow, each line has 3 space separated integers ai, bi and wi.
+Output Format
+Print 1 if it contains a negative weight cycle else print 0.
+
+// input ->
+3 3
+0 1 -1
+1 2 -4
+2 0 3
+
+output ->
+1
+
+
+*/
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   
+	   String[] s = br.readLine().split(" ");
+	   int n = Integer.parseInt(s[0]);
+	   int m = Integer.parseInt(s[1]);
+	   
+	   int[][] graph = new int[m][3];
+	   
+	   for(int i = 0 ; i < m ; i++){
+	       String[] st = br.readLine().split(" ");
+	       graph[i][0] = Integer.parseInt(st[0]);
+	       graph[i][1] = Integer.parseInt(st[1]);
+	       graph[i][2] = Integer.parseInt(st[2]);
+	   }
+	   
+	   int[] path = new int[n];
+	   Arrays.fill(path , Integer.MAX_VALUE);
+	   path[0] = 0;
+	   
+	   for(int i = 0 ; i < n - 1 ; i++){
+	       for(int j = 0 ;j < m ; j++){
+	           int u = graph[j][0];
+	           int v = graph[j][1];
+	           int wt = graph[j][2];
+	           
+	           if(path[u] == Integer.MAX_VALUE){
+	               continue;
+	           }
+	           if(path[u] + wt < path[v]){
+	               path[v] = path[u] + wt;
+	           }
+	       }
+	   }
+	   
+	   boolean ngc = false;
+	   
+	   for(int i = 0 ; i < n ; i++){
+	       for(int j = 0 ;j < m ; j++){
+	           int u = graph[j][0];
+	           int v = graph[j][1];
+	           int wt = graph[j][2];
+	           
+	           if(path[u] == Integer.MAX_VALUE){
+	               continue;
+	           }
+	           if(path[u] + wt < path[v]){
+	               ngc = true;
+	           }
+	       }
+	   }
+	   
+	   if(ngc){
+	       System.out.println(1);
+	   }else{
+	       System.out.println(0);
+	   }
+	}
+}
